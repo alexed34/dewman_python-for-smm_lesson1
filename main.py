@@ -10,7 +10,7 @@ load_dotenv()
 
 
 def get_text(ACCESS_TOKEN, start_time, end_time):
-    url = f'https://api.vk.com/method/newsfeed.search?q="Coca-Cola"&' \
+    url = f'https://api.vk.com/method/newsfeed.search?q={text_request}&' \
           f'start_time={start_time}&end_time={end_time}&' \
           f'access_token={ACCESS_TOKEN}&v=5.130'
     r = requests.get(url)
@@ -64,4 +64,5 @@ def main():
 
 if __name__ == '__main__':
     ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
+    text_request = 'Coca-Cola'
     main()
