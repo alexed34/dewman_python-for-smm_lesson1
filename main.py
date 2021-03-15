@@ -7,7 +7,8 @@ import plotly.graph_objs as go
 import requests
 from dotenv import load_dotenv
 
-logging.basicConfig(level=logging.INFO, format='%(message)s')
+
+logger = logging.getLogger(__file__)
 
 
 
@@ -26,9 +27,9 @@ def get_text(access_token, start_time, end_time, text_request):
 
 def get_last_dates(num):
     dates = []
-    for day in range(1, num + 1):
+    for number in range(1, num + 1):
         today = datetime.date.today()
-        day_before = today - datetime.timedelta(days=day)
+        day_before = today - datetime.timedelta(days=number)
         timestamp_yesterday = datetime.datetime(year=day_before.year,
                                                 month=day_before.month,
                                                 day=day_before.day).timestamp()
@@ -47,7 +48,7 @@ def get_count_stat(dates, access_token, text_request):
         response = get_text(access_token, start_time, end_time, text_request)
         total_count = response['response']['total_count']
         count_stat.append(total_count)
-        logging.info(data)
+        logger.info(f'{data} - {total_count} результатов')
         time.sleep(1)
     return count_stat
 
@@ -60,12 +61,15 @@ def show_bar(dates, count_stat):
 
 def main():
     load_dotenv()
+    logging.basicConfig(level=logging.INFO, format='%(message)s')
+    # Coca - Cola
     access_token = os.getenv('ACCESS_TOKEN')
-    text_request = 'Coca-Cola'
+    text_request = input('Введите поисковый запрос: ')
     dates = get_last_dates(7)
     count_stat = get_count_stat(dates, access_token, text_request)
     show_bar(dates, count_stat)
 
 
 if __name__ == '__main__':
+
     main()
